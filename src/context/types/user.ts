@@ -1,7 +1,14 @@
 export type UserRole = 'admin' | 'client'
 
 export type User = {
-  id: string
-  name: string
-  role: UserRole
+  _id: string
+  nombre: string
+  apellido: string
+  email: string
+  direccion: string
+  telefono: string
+  fecha_cumpleanos: string
+  cc: string
+  nombre_negocio: string
+  role: 'client' | 'admin'
 }
