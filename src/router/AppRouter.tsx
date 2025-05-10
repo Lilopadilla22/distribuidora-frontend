@@ -4,8 +4,8 @@ import { AdminLayout } from '../layouts/AdminLayout'
 import { AdminDashboard } from '../pages/AdminDashboard'
 import { ClientLayout } from '../layouts/ClientLayout'
 import { Home } from '../pages/Home/Home'
-import { Login } from '../pages/Login/Login'
-import { Register } from '../pages/Login/Register'
+import Login from '../pages/Login/Login'
+import Register from '../pages/Register/Register'
 
 const AppRouter = () => {
   const { user } = useAuthStore()
@@ -25,14 +25,20 @@ const AppRouter = () => {
       </Route>
     )
   } else {
-    protectedRoutes = <Route path="*" element={<Navigate to="/login" />} />
+    protectedRoutes = <Route path="*" element={<Navigate to="/login" replace />} />
   }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to={user.role === 'admin' ? '/admin' : '/'} replace />}
+        />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to={user.role === 'admin' ? '/admin' : '/'} replace />}
+        />
         {protectedRoutes}
       </Routes>
     </BrowserRouter>
@@ -40,3 +46,4 @@ const AppRouter = () => {
 }
 
 export default AppRouter
+
