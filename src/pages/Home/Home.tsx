@@ -105,7 +105,7 @@ const Home = () => {
                 >
                   <div className="category-image-container">
                     <img 
-                      //src={`/images/category-${category.slug}.png`} 
+                      src={`/images/category-${category?.slug}.png`} 
                       alt={category.nombre}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
