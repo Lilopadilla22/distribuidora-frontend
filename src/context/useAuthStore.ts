@@ -8,18 +8,31 @@ type AuthState = {
   logout: () => void
 }
 
+const devUser: User = {
+  _id: 'dev-123',
+  nombre: 'Lilia',
+  apellido: 'Dev',
+  email: 'dev@example.com',
+  role: 'client',
+  direccion: '',
+  telefono: '',
+  fecha_cumpleanos: '',
+  cc: '',
+  nombre_negocio: 'DemoShop',
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: null,
+      user: import.meta.env.DEV ? devUser : null,
       login: (user) => set({ user }),
       logout: () => {
         set({ user: null })
-        localStorage.removeItem('auth-storage') 
+        localStorage.removeItem('auth-storage')
       },
     }),
     {
-      name: 'auth-storage', 
+      name: 'auth-storage',
     }
   )
 )
