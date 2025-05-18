@@ -3,9 +3,10 @@ import { useAuthStore } from '../context/useAuthStore'
 import { AdminLayout } from '../layouts/AdminLayout'
 import { AdminDashboard } from '../pages/AdminDashboard'
 import { ClientLayout } from '../layouts/ClientLayout'
-import { Home } from '../pages/Home/Home'
+
 import Login from '../pages/Login/Login'
 import Register from '../pages/Register/Register'
+import Home from '../pages/Home/Home'
 
 const AppRouter = () => {
   const { user } = useAuthStore()
