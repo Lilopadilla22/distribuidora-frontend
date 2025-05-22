@@ -21,10 +21,12 @@ const devUser: User = {
   nombre_negocio: 'DemoShop',
 }
 
+const USE_DEV_USER = false
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: import.meta.env.DEV ? devUser : null,
+      user: USE_DEV_USER ? devUser : null,
       login: (user) => set({ user }),
       logout: () => {
         set({ user: null })
@@ -36,3 +38,4 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+
