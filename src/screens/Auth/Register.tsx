@@ -7,17 +7,20 @@ import type { RegisterFormData } from '../../types';
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<RegisterFormData>({
     nombre: '',
+    apellido: '',
     email: '',
     password: '',
-    telefono: '',
     direccion: '',
-    empresa: '',
+    telefono: '',
+    fecha_cumpleanos: '',
+    cc: '',
+    nombre_negocio: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,12 +42,18 @@ const Register: React.FC = () => {
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Error al registrar usuario');
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error) {
+        const axiosError = error as { response?: { data?: { message?: string } } };
+        setError(axiosError.response?.data?.message || 'Error al registrar usuario');
+      } else {
+        setError('Error al registrar usuario');
+      }
     } finally {
       setLoading(false);
     }
   };
+
 
   if (success) {
     return (
@@ -102,6 +111,26 @@ const Register: React.FC = () => {
                 />
               </div>
             </div>
+
+            <div>
+              <label htmlFor="apellido" className="block text-sm font-medium text-gray-700 mb-1">
+                Apellido *
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  id="apellido"
+                  name="apellido"
+                  type="text"
+                  required
+                  value={formData.apellido}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                  placeholder="Tu apellido"
+                />
+              </div>
+            </div>
+
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -176,7 +205,7 @@ const Register: React.FC = () => {
                   id="empresa"
                   name="empresa"
                   type="text"
-                  value={formData.empresa}
+                  value={formData.nombre_negocio}
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                   placeholder="Nombre de tu empresa"

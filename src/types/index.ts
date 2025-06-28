@@ -91,11 +91,15 @@ export interface UserProfile {
   user: User;
 }
 
-export interface RegisterFormData {
+export type RegisterFormData = {
   nombre: string;
+  apellido: string;
   email: string;
   password: string;
-  telefono?: string;
-  direccion?: string;
-  empresa?: string;
-}
+  direccion: string;
+  telefono: string;
+  fecha_cumpleanos: string;
+  cc: string;
+  nombre_negocio: string;
+  role?: string; 
+};
