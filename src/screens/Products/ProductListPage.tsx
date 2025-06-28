@@ -8,7 +8,6 @@ import type { Category, Product } from '../../types';
 const ProductListPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
@@ -45,7 +44,6 @@ const ProductListPage: React.FC = () => {
           productsData = await fetchProductsByCategory(selectedCategory);
         }
         
-        setProducts(productsData);
         setFilteredProducts(productsData.filter(p => p.disponible));
       } catch (error) {
         console.error('Error loading products:', error);

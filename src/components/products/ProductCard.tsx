@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../utils/formatters';
 import { useOrderStore } from '../../context/useOrderStore';
@@ -25,17 +24,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showActions = true }
     return formatPrice(product.precio_por_unidad);
   };
 
-  const getImageUrl = () => {
-    // Placeholder images based on category
-    const categoryName = product.categoria.nombre.toLowerCase();
-    if (categoryName.includes('pollo')) {
-      return 'https://images.pexels.com/photos/616354/pexels-photo-616354.jpeg?auto=compress&cs=tinysrgb&w=400';
-    } else if (categoryName.includes('cerdo')) {
-      return 'https://images.pexels.com/photos/323682/pexels-photo-323682.jpeg?auto=compress&cs=tinysrgb&w=400';
-    } else {
-      return 'https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=400';
-    }
-  };
+const getImageUrl = () => {
+  const name = product.nombre.toLowerCase();
+
+  if (name.includes('pechuga')) {
+    return 'https://famipollo.com.co/wp-content/uploads/2020/05/pechuga1.png';
+  } else if (name.includes('alita')) {
+    return 'https://media.istockphoto.com/id/1130423940/es/foto/alitas-de-pollo-crudas.jpg?s=170667a&w=0&k=20&c=VCQ_iSktgktSnC2Qjvog_bB93vTPtBTiDaVthbTT0Os=';
+  } else if (name.includes('chorizo')) {
+    return 'https://premier.com.co/wp-content/uploads/2024/04/chorizo-antioqueno.webp';
+  } else if (name.includes('butifarra')) {
+    return 'https://alimentospromeat.com/wp-content/uploads/2020/10/Butifarras.jpg';
+  } else if (name.includes('cerdo')) {
+    return 'https://media.istockphoto.com/id/1200968915/es/foto/carne-de-cerdo-cruda-con-romero-y-grano-de-pimienta-aislados-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=S1_RpfxknBTgWB3U9VR_DgtYPIticsETfwSNtmiSIh4=';
+  } else if (name.includes('pollo')) {
+    return 'https://web.macpollo.com/app01/114.png';
+  } 
+   else {
+    return 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg'; 
+  }
+};
+
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all border-b-4 border-orange-400 overflow-hidden group">
@@ -75,12 +84,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showActions = true }
           
           {showActions && (
             <div className="flex space-x-2">
-              <Link 
-                to={`/producto/${product._id}`}
-                className="p-2 text-gray-600 hover:text-orange-500 transition-colors"
-              >
-                <Eye className="w-5 h-5" />
-              </Link>
               <button 
                 onClick={handleAddToOrder}
                 disabled={!product.disponible}
