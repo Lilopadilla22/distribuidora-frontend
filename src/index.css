@@ -1,3 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Paleta de colores globales Distrishulk */
+:root {
+  --color-tomato: #FF6F61;
+  --color-orange: #FFA726;
+  --color-yellow: #FFD54F;
+  --color-white: #FFFFFF;
+  --color-brown: #A1887F;
+  --color-leaf: #388E3C;
+  --color-bg: #FFF8F3;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,8 +20,8 @@
 }
 
 body {
-  font-family: sans-serif;
-  background-color: #fe9b86;
+  font-family: 'Poppins', 'Montserrat', 'Roboto', sans-serif;
+  background-color: var(--color-bg);
   color: #000;
   line-height: 1.4;
   min-height: 100vh;
@@ -15,4 +30,91 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Clases personalizadas usando la paleta */
+.text-brown-600 {
+  color: var(--color-brown);
+}
+
+.bg-orange-400 {
+  background-color: var(--color-orange);
+}
+
+.bg-red-400 {
+  background-color: var(--color-tomato);
+}
+
+.text-orange-500 {
+  color: var(--color-orange);
+}
+
+.text-red-500 {
+  color: var(--color-tomato);
+}
+
+.border-orange-400 {
+  border-color: var(--color-orange);
+}
+
+.bg-orange-50 {
+  background-color: var(--color-bg);
+}
+
+.bg-orange-100 {
+  background-color: #FFF3E0;
+}
+
+.text-orange-800 {
+  color: #E65100;
+}
+
+.hover\:bg-red-400:hover {
+  background-color: var(--color-tomato);
+}
+
+.hover\:text-orange-500:hover {
+  color: var(--color-orange);
+}
+
+.hover\:text-red-500:hover {
+  color: var(--color-tomato);
+}
+
+.focus\:ring-orange-400:focus {
+  --tw-ring-color: var(--color-orange);
+}
+
+/* Animaciones suaves */
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.transition-transform {
+  transition: transform 0.2s ease;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.2s ease;
+}
+
+/* Efectos hover mejorados */
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+/* Utilidades adicionales */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
