@@ -50,7 +50,9 @@ export const fetchProducts = async (): Promise<Product[]> => {
 
 export const fetchProductsByCategory = async (categoryId: string): Promise<Product[]> => {
   try {
-    const response = await api.get(`/productos/categoria/${categoryId}`);
+    const response = await api.get(`/productos`, {
+      params: { categoria: categoryId }
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching products by category:', error);
