@@ -26,7 +26,7 @@ const Header: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-brown-600">Distrishulk</h1>
-              <p className="text-sm text-gray-600">Distribuidora de Carnes</p>
+              <p className="text-sm text-gray-600">Distribuidora a tu servicio</p>
             </div>
           </Link>
 
