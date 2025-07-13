@@ -12,6 +12,7 @@ import OrderDetailPage from '../screens/Orders/OrderDetailPage';
 import CreateOrderPage from '../screens/Orders/CreateOrderPage';
 import AdminDashboard from '../screens/Admin/AdminDashboard';
 import ProfilePage from '../screens/profile/ProfilePage';
+import AboutPage from '../screens/About/AboutPage';
 
 
 const AppRouter = () => {
@@ -51,6 +52,7 @@ const AppRouter = () => {
                 <Route path="pedido" element={<CreateOrderPage />} />
 
                 <Route path="perfil" element={<ProfilePage />} />
+                <Route path="acerca-de" element={<AboutPage />} />
               </Route>
             )}
           </>
