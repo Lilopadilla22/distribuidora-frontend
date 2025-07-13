@@ -32,6 +32,7 @@ const Login: React.FC = () => {
     try {
       const response = await loginRequest(formData.email, formData.password);
       login(response.user, response.token);
+      localStorage.setItem('token', response.token);
       
       if (response.user.role === 'admin') {
         navigate('/admin');
