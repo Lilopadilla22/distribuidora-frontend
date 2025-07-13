@@ -202,8 +202,8 @@ const Register: React.FC = () => {
               <div className="relative">
                 <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  id="empresa"
-                  name="empresa"
+                  id="nombre_negocio"
+                  name="nombre_negocio"
                   type="text"
                   value={formData.nombre_negocio}
                   onChange={handleChange}
