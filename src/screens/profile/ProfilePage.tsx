@@ -20,7 +20,6 @@ const ProfilePage: React.FC = () => {
     try {
       const profileData = await fetchUserProfile();
 
-      console.log(profile, 'Profike');
       setProfile(profileData);
       updateUser(profileData.user);
     } catch (error) {
