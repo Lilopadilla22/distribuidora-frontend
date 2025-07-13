@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { User, Mail, Phone, MapPin, Building, Calendar, CreditCard, Edit, Save, X } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Building, Calendar, CreditCard, Edit, Save, X, Info } from 'lucide-react';
 import { fetchUserProfile } from '../../services/api';
 import { useAuthStore } from '../../context/useAuthStore';
 import { formatDate } from '../../utils/formatters';
 import type { UserProfile } from '../../types';
+import { Link } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -91,7 +92,7 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex space-x-2">
                 {!editing ? (
                   <button
@@ -233,11 +234,10 @@ const ProfilePage: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Tipo de cuenta</p>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                    user.role === 'admin' 
-                      ? 'bg-purple-100 text-purple-800' 
+                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${user.role === 'admin'
+                      ? 'bg-purple-100 text-purple-800'
                       : 'bg-blue-100 text-blue-800'
-                  }`}>
+                    }`}>
                     {user.role === 'admin' ? 'Administrador' : 'Cliente'}
                   </span>
                 </div>
@@ -272,7 +272,7 @@ const ProfilePage: React.FC = () => {
           <div className="bg-white p-6 rounded-xl shadow-md border-b-4 border-blue-400 text-center">
             <h3 className="font-semibold text-gray-800 mb-2">Mis Pedidos</h3>
             <p className="text-gray-600 text-sm mb-4">Ver historial de pedidos</p>
-            <button 
+            <button
               onClick={() => window.location.href = '/pedidos'}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
             >
@@ -283,7 +283,7 @@ const ProfilePage: React.FC = () => {
           <div className="bg-white p-6 rounded-xl shadow-md border-b-4 border-green-400 text-center">
             <h3 className="font-semibold text-gray-800 mb-2">Productos</h3>
             <p className="text-gray-600 text-sm mb-4">Explorar catálogo</p>
-            <button 
+            <button
               onClick={() => window.location.href = '/productos'}
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
             >
@@ -294,12 +294,23 @@ const ProfilePage: React.FC = () => {
           <div className="bg-white p-6 rounded-xl shadow-md border-b-4 border-orange-400 text-center">
             <h3 className="font-semibold text-gray-800 mb-2">Nuevo Pedido</h3>
             <p className="text-gray-600 text-sm mb-4">Crear pedido rápido</p>
-            <button 
+            <button
               onClick={() => window.location.href = '/pedido'}
               className="bg-orange-400 text-white px-4 py-2 rounded-lg hover:bg-red-400 transition-colors"
             >
               Crear Pedido
             </button>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md border-b-4 border-purple-400 text-center">
+            <h3 className="font-semibold text-gray-800 mb-2">Acerca de</h3>
+            <p className="text-gray-600 text-sm mb-4">Información de Distrishulk</p>
+            <Link
+              to="/acerca-de"
+              className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors inline-flex items-center space-x-2"
+            >
+              <Info className="w-4 h-4" />
+              <span>Ver Info</span>
+            </Link>
           </div>
         </div>
       </div>
