@@ -4,6 +4,9 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { loginRequest } from '../../services/api';
 import { useAuthStore } from '../../context/useAuthStore';
 
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
+import { setCookie } from '../../utils/cookies';
+
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -33,6 +36,16 @@ const Login: React.FC = () => {
       const response = await loginRequest(formData.email, formData.password);
       login(response.user, response.token);
       localStorage.setItem('token', response.token);
+
+      try {
+      const { exp } = jwtDecode<JwtPayload>(response.token);
+      const nowSec = Math.floor(Date.now() / 1000);
+      const maxAge = exp && exp > nowSec ? exp - nowSec : 60 * 60;
+      setCookie('token', response.token, maxAge);
+    } catch (err) {
+      console.warn('No se pudo decodificar el token, cookie expira en 1h por defecto', err);
+      setCookie('token', response.token , 60 * 60);
+    }
       
       if (response.user.role === 'admin') {
         navigate('/admin');
