@@ -1,3 +1,5 @@
+import type { OrderStatus } from "../utils/constants";
+
 export interface Category {
   _id: string;
   nombre: string;
@@ -63,7 +65,7 @@ export interface Order {
   usuario: string;
   productos: OrderProductResponse[];
   total: number;
-  estado: 'pendiente' | 'cancelado' | 'entregado';
+  estado: OrderStatus;
   hora_limite: string;
   createdAt: string;
   updatedAt: string;
@@ -103,3 +105,44 @@ export type RegisterFormData = {
   nombre_negocio: string;
   role?: string; 
 };
+
+// Tipos para administración
+export interface AdminOrder extends Omit<Order, 'usuario'> {
+  usuario: {
+    _id: string;
+    nombre: string;
+    email: string;
+  };
+}
+
+export interface AdminUser {
+  _id: string;
+  nombre: string;
+  apellido?: string;
+  email: string;
+  telefono?: string;
+  direccion?: string;
+  empresa?: string;
+  fecha_cumpleanos?: string;
+  cc?: string;
+  nombre_negocio?: string;
+  role: 'admin' | 'client';
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface CreateCategoryData {
+  nombre: string;
+  descripcion: string;
+}
+
+export interface CreateProductData {
+  nombre: string;
+  descripcion: string;
+  precio_por_kilo: number;
+  precio_por_unidad: number;
+  unidad: 'kilo' | 'unidad';
+  categoria: string;
+  recomendado: boolean;
+}

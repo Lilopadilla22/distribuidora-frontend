@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Package, Clock, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Package, Clock, AlertCircle, CheckCircle, XCircle, CarFrontIcon } from 'lucide-react';
 import { fetchUserOrders, cancelOrder } from '../../services/api';
 import { formatPrice, formatDateTime, formatTimeRemaining, canCancelOrder } from '../../utils/formatters';
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../../utils/constants';
@@ -21,7 +21,6 @@ const OrderDetailPage: React.FC = () => {
     if (!id) return;
     
     try {
-      // Como no tienes endpoint específico para un pedido, obtenemos todos y filtramos
       const orders = await fetchUserOrders();
       const foundOrder = orders.find(order => order._id === id);
       setOrder(foundOrder || null);
@@ -40,7 +39,7 @@ const OrderDetailPage: React.FC = () => {
     setCancelling(true);
     try {
       await cancelOrder(order._id);
-      await loadOrderDetail(); // Recargar detalles
+      await loadOrderDetail(); 
     } catch (error: any) {
       alert(error.response?.data?.message || 'Error al cancelar el pedido');
     } finally {
@@ -56,6 +55,8 @@ const OrderDetailPage: React.FC = () => {
         return <CheckCircle className="w-6 h-6" />;
       case 'cancelado':
         return <XCircle className="w-6 h-6" />;
+      case 'en camino':
+        return <CarFrontIcon className="w-6 h-6" />;
       default:
         return <Package className="w-6 h-6" />;
     }

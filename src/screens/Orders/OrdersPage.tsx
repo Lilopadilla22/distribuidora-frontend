@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Clock, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { Package, Clock, AlertCircle, CheckCircle, XCircle, CarFrontIcon } from 'lucide-react';
 import { fetchUserOrders, cancelOrder } from '../../services/api';
 import { formatPrice, formatDateTime, formatTimeRemaining, canCancelOrder } from '../../utils/formatters';
 import { ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../../utils/constants';
@@ -50,6 +50,8 @@ const OrdersPage: React.FC = () => {
         return <CheckCircle className="w-5 h-5" />;
       case 'cancelado':
         return <XCircle className="w-5 h-5" />;
+      case 'en camino':
+        return <CarFrontIcon className="w-6 h-6" />;
       default:
         return <Package className="w-5 h-5" />;
     }
