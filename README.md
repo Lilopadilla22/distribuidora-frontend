@@ -232,7 +232,7 @@ interface Order {
   usuario: string;
   productos: OrderProductResponse[];
   total: number;
-  estado: 'pendiente' | 'cancelado' | 'entregado';
+  estado: 'pendiente' | 'cancelado' | 'entregado' | 'en camino';
   hora_limite: string;
   // ... más campos
 }

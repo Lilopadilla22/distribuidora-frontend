@@ -1,22 +1,91 @@
-import React from 'react';
-import { Users, Package, ShoppingCart, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Users, Package, ShoppingCart, TrendingUp, Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { fetchAllUsers, fetchAllProducts, fetchAllOrders } from '../../services/apiAdmin';
+import { formatPrice } from '../../utils/formatters';
 
 const AdminDashboard: React.FC = () => {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalProducts: 0,
+    totalOrders: 0,
+    totalSales: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    try {
+      const [users, products, orders] = await Promise.all([
+        fetchAllUsers(),
+        fetchAllProducts(),
+        fetchAllOrders(),
+      ]);
+
+      const totalSales = orders
+        .filter(order => order.estado === 'entregado')
+        .reduce((sum, order) => sum + order.total, 0);
+
+      setStats({
+        totalUsers: users.length,
+        totalProducts: products.length,
+        totalOrders: orders.length,
+        totalSales,
+      });
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-400 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Administrativo</h1>
-        <p className="text-gray-600">Bienvenido al panel de administración de Distrishulk</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Administrativo</h1>
+          <p className="text-gray-600">Panel de control de Distrishulk</p>
+        </div>
+        <div className="flex space-x-3">
+          <Link
+            to="/admin/productos/nuevo"
+            className="bg-orange-400 text-white px-4 py-2 rounded-lg hover:bg-red-400 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Nuevo Producto</span>
+          </Link>
+          <Link
+            to="/admin/categorias/nueva"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Nueva Categoría</span>
+          </Link>
+        </div>
       </div>
 
-      {/* Placeholder cards */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-md border-b-4 border-blue-400">
           <div className="flex items-center">
             <Users className="w-8 h-8 text-blue-500" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Usuarios</p>
-              <p className="text-2xl font-bold text-gray-900">---</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
             </div>
           </div>
         </div>
@@ -26,7 +95,7 @@ const AdminDashboard: React.FC = () => {
             <Package className="w-8 h-8 text-green-500" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Productos</p>
-              <p className="text-2xl font-bold text-gray-900">---</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalProducts}</p>
             </div>
           </div>
         </div>
@@ -36,7 +105,7 @@ const AdminDashboard: React.FC = () => {
             <ShoppingCart className="w-8 h-8 text-orange-500" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Pedidos</p>
-              <p className="text-2xl font-bold text-gray-900">---</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
             </div>
           </div>
         </div>
@@ -46,55 +115,52 @@ const AdminDashboard: React.FC = () => {
             <TrendingUp className="w-8 h-8 text-purple-500" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Ventas</p>
-              <p className="text-2xl font-bold text-gray-900">---</p>
+              <p className="text-2xl font-bold text-gray-900">{formatPrice(stats.totalSales)}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Placeholder content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Pedidos Recientes</h3>
-          <div className="text-center py-8 text-gray-500">
-            <ShoppingCart className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p>Panel de pedidos en desarrollo</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Productos Populares</h3>
-          <div className="text-center py-8 text-gray-500">
-            <Package className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p>Estadísticas de productos en desarrollo</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-              <span className="text-yellow-800 font-bold">!</span>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Link
+          to="/admin/productos"
+          className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-b-4 border-green-400"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Gestionar Productos</h3>
+              <p className="text-gray-600">Ver, crear y editar productos</p>
             </div>
+            <Package className="w-8 h-8 text-green-500" />
           </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800">Panel en Desarrollo</h3>
-            <div className="mt-2 text-sm text-yellow-700">
-              <p>
-                Este es un placeholder del panel administrativo. Las funcionalidades completas 
-                de administración se implementarán próximamente, incluyendo:
-              </p>
-              <ul className="mt-2 list-disc list-inside space-y-1">
-                <li>Gestión de productos y categorías</li>
-                <li>Administración de pedidos</li>
-                <li>Gestión de usuarios</li>
-                <li>Reportes y estadísticas</li>
-                <li>Configuración del sistema</li>
-              </ul>
+        </Link>
+
+        <Link
+          to="/admin/pedidos"
+          className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-b-4 border-orange-400"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Gestionar Pedidos</h3>
+              <p className="text-gray-600">Ver y administrar todos los pedidos</p>
             </div>
+            <ShoppingCart className="w-8 h-8 text-orange-500" />
           </div>
-        </div>
+        </Link>
+
+        <Link
+          to="/admin/usuarios"
+          className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-b-4 border-blue-400"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Gestionar Usuarios</h3>
+              <p className="text-gray-600">Ver y administrar usuarios</p>
+            </div>
+            <Users className="w-8 h-8 text-blue-500" />
+          </div>
+        </Link>
       </div>
     </div>
   );
